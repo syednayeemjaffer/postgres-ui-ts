@@ -6,12 +6,8 @@ interface componentInt {
 }
 
 const Productor = ({ component: Component }: componentInt) => {
-  const token:string | null = localStorage.getItem("token");
-
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login"  />;
   return <Component />;
 };
 

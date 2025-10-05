@@ -8,10 +8,7 @@ interface dataInt {
 }
 
 const Login = () => {
-  const [data, setData] = useState<dataInt>({
-    email: "",
-    password: "",
-  });
+  const [data, setData] = useState<dataInt>({ email: "", password: "" });
   const navigate = useNavigate();
 
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +20,6 @@ const Login = () => {
     try {
       const res = await axios.post("http://localhost:2000/api/login", data);
       localStorage.setItem("token", res.data.token);
-      alert('Login successfully completed')
       navigate("/home");
     } catch (err: any) {
       alert(`Error occurred: ${err.message}`);
@@ -34,21 +30,10 @@ const Login = () => {
     <div className="loginDiv">
       <h1>Login</h1>
       <form className="loginForm" onSubmit={submit}>
-        <input
-          type="email"
-          name="email"
-          onChange={inputHandler}
-          placeholder="Enter email"
-        />
-        <input
-          type="text"
-          name="password"
-          onChange={inputHandler}
-          placeholder="Enter password"
-        />
+        <input type="email" name="email" onChange={inputHandler} placeholder="Enter email" />
+        <input type="password" name="password" onChange={inputHandler} placeholder="Enter password" />
         <button type="submit">Login</button>
       </form>
-
       <p>
         Don't have an account? <Link to="/register">Register</Link>
       </p>

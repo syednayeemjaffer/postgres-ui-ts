@@ -12,23 +12,13 @@ interface inputIn {
 }
 
 const Register = () => {
-  const [data, setData] = useState<inputIn>({
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    ph: "",
-    profile: null,
-  });
+  const [data, setData] = useState<inputIn>({ firstname: "", lastname: "", email: "", password: "", ph: "", profile: null });
   const navigate = useNavigate();
 
   const inputhandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
-    if (name === "profile" && files) {
-      setData({ ...data, profile: files[0] });
-    } else {
-      setData({ ...data, [name]: value });
-    }
+    if (name === "profile" && files) setData({ ...data, profile: files[0] });
+    else setData({ ...data, [name]: value });
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -40,14 +30,10 @@ const Register = () => {
       formData.append("email", data.email);
       formData.append("password", data.password);
       formData.append("ph", data.ph);
-      if (data.profile) {
-        formData.append("profile", data.profile);
-      }
-      await axios.post("http://localhost:2000/api/register", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      if (data.profile) formData.append("profile", data.profile);
+      await axios.post("http://localhost:2000/api/register", formData, { headers: { "Content-Type": "multipart/form-data" } });
       navigate("/login");
-    } catch (err) {
+    } catch {
       alert("Error occurred");
     }
   };
