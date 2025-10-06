@@ -45,7 +45,7 @@ const Register = () => {
         <input type="text" name="firstname" onChange={inputhandler} placeholder="First Name" />
         <input type="text" name="lastname" onChange={inputhandler} placeholder="Last Name" />
         <input type="email" name="email" onChange={inputhandler} placeholder="Email" />
-        <input type="password" name="password" onChange={inputhandler} placeholder="Password" />
+        <input type="text" name="password" onChange={inputhandler} placeholder="Password" />
         <input type="number" name="ph" onChange={inputhandler} placeholder="Phone" />
         <input type="file" name="profile" onChange={inputhandler} />
         <button type="submit">Register</button>

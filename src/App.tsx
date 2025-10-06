@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import "react-quill/dist/quill.snow.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Register from "./auth/Register";
 import Login from "./auth/Login";
@@ -8,6 +9,8 @@ import Productor from "./auth/Productor";
 import Users from "./component/Users";
 import Update from "./component/Update";
 import Navbar from "./auth/Navbar";
+import Post from "./component/Post";
+import ListPost from "./component/ListPost";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -28,6 +31,8 @@ function App() {
         <Route path="/home" element={<Productor component={Home} />} />
         <Route path="/users" element={<Productor component={Users} />} />
         <Route path="/update/:id" element={<Productor component={Update} />} />
+        <Route path="/post" element={<Productor component={Post} />} />
+        <Route path="/listpost" element={<Productor component={ListPost} />} />
       </Routes>
     </BrowserRouter>
   );
