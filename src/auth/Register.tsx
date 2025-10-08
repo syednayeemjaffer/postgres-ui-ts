@@ -12,7 +12,14 @@ interface inputIn {
 }
 
 const Register = () => {
-  const [data, setData] = useState<inputIn>({ firstname: "", lastname: "", email: "", password: "", ph: "", profile: null });
+  const [data, setData] = useState<inputIn>({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    ph: "",
+    profile: null,
+  });
   const navigate = useNavigate();
 
   const inputhandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +38,9 @@ const Register = () => {
       formData.append("password", data.password);
       formData.append("ph", data.ph);
       if (data.profile) formData.append("profile", data.profile);
-      await axios.post("http://localhost:2000/api/register", formData, { headers: { "Content-Type": "multipart/form-data" } });
+      await axios.post("http://localhost:2000/api/register", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       navigate("/login");
     } catch {
       alert("Error occurred");
@@ -42,11 +51,36 @@ const Register = () => {
     <div className="registerDiv">
       <h1>Register</h1>
       <form className="registerForm" onSubmit={submit}>
-        <input type="text" name="firstname" onChange={inputhandler} placeholder="First Name" />
-        <input type="text" name="lastname" onChange={inputhandler} placeholder="Last Name" />
-        <input type="email" name="email" onChange={inputhandler} placeholder="Email" />
-        <input type="text" name="password" onChange={inputhandler} placeholder="Password" />
-        <input type="number" name="ph" onChange={inputhandler} placeholder="Phone" />
+        <input
+          type="text"
+          name="firstname"
+          onChange={inputhandler}
+          placeholder="First Name"
+        />
+        <input
+          type="text"
+          name="lastname"
+          onChange={inputhandler}
+          placeholder="Last Name"
+        />
+        <input
+          type="email"
+          name="email"
+          onChange={inputhandler}
+          placeholder="Email"
+        />
+        <input
+          type="text"
+          name="password"
+          onChange={inputhandler}
+          placeholder="Password"
+        />
+        <input
+          type="number"
+          name="ph"
+          onChange={inputhandler}
+          placeholder="Phone"
+        />
         <input type="file" name="profile" onChange={inputhandler} />
         <button type="submit">Register</button>
       </form>

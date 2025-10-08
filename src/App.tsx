@@ -10,7 +10,8 @@ import Users from "./component/Users";
 import Update from "./component/Update";
 import Navbar from "./auth/Navbar";
 import Post from "./component/Post";
-import ListPost from "./component/ListPost";
+import UpdatePost from "./component/UpdatePost";
+import "react-quill/dist/quill.snow.css";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -22,17 +23,17 @@ function App() {
         <Route path="/" element={<Productor component={Home} />} />
         <Route
           path="/login"
-          element={!token ? <Login /> : <Navigate to="/home" replace />}
+          Component={Login}
         />
         <Route
           path="/register"
-          element={!token ? <Register /> : <Navigate to="/home" replace />}
+          Component={Register}
         />
         <Route path="/home" element={<Productor component={Home} />} />
         <Route path="/users" element={<Productor component={Users} />} />
         <Route path="/update/:id" element={<Productor component={Update} />} />
         <Route path="/post" element={<Productor component={Post} />} />
-        <Route path="/listpost" element={<Productor component={ListPost} />} />
+        <Route path="/postUpdate/:id" element={<Productor component={UpdatePost}/>} />
       </Routes>
     </BrowserRouter>
   );

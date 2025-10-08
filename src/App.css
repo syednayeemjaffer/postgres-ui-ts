@@ -137,203 +137,622 @@
   color: white;
 }
 
-
 /* ---------------- Wrapper & Page Layout ---------------- */
-.loginDiv, .registerDiv {
+.loginDiv,
+.registerDiv {
   width: 100%;
-  min-height: 100vh;          /* Full viewport height */
-  display: flex;              /* Flexbox layout */
-  flex-direction: column;     /* Stack children vertically */
-  justify-content: center;    /* Center content vertically */
-  align-items: center;        /* Center content horizontally */
-  background: #f7f7f7;       /* Light gray background */
-  padding: 20px;              /* Space around content */
+  min-height: 100vh; /* Full viewport height */
+  display: flex; /* Flexbox layout */
+  flex-direction: column; /* Stack children vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  background: #f7f7f7; /* Light gray background */
+  padding: 20px; /* Space around content */
 }
 
 /* ---------------- Form Card ---------------- */
-.loginForm, .registerForm {
-  width: 300px;                   /* Fixed width for form */
-  padding: 20px;                  /* Space inside the form */
-  border-radius: 8px;             /* Rounded corners */
-  background: white;              /* White background for card effect */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Subtle shadow */
-  display: flex;                  /* Flexbox for vertical stacking */
-  flex-direction: column;         /* Stack inputs vertically */
-  gap: 15px;                      /* Space between inputs/buttons */
+.loginForm,
+.registerForm {
+  width: 300px; /* Fixed width for form */
+  padding: 20px; /* Space inside the form */
+  border-radius: 8px; /* Rounded corners */
+  background: white; /* White background for card effect */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  display: flex; /* Flexbox for vertical stacking */
+  flex-direction: column; /* Stack inputs vertically */
+  gap: 15px; /* Space between inputs/buttons */
 }
 
 /* ---------------- Inputs ---------------- */
-.loginForm input, .registerForm input {
-  padding: 10px;                  /* Space inside input */
-  border: 1px solid #ccc;         /* Light gray border */
-  border-radius: 5px;             /* Rounded corners */
-  font-size: 14px;                /* Comfortable font size */
-  outline: none;                  /* Remove default focus outline */
-  transition: 0.2s ease;          /* Smooth transition for focus */
+.loginForm input,
+.registerForm input {
+  padding: 10px; /* Space inside input */
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 14px; /* Comfortable font size */
+  outline: none; /* Remove default focus outline */
+  transition: 0.2s ease; /* Smooth transition for focus */
 }
 
 /* Input focus effect */
-.loginForm input:focus, .registerForm input:focus {
-  border-color: #007bff;          /* Blue border on focus */
-  box-shadow: 0 0 5px rgba(0,123,255,0.3); /* Soft glow */
+.loginForm input:focus,
+.registerForm input:focus {
+  border-color: #007bff; /* Blue border on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Soft glow */
 }
 
 /* File input specifically for Register form */
 .registerForm input[type="file"] {
   padding: 5px;
-  border: none;                    /* Remove default border */
+  border: none; /* Remove default border */
   font-size: 14px;
 }
 
 /* ---------------- Button ---------------- */
-.loginForm button, .registerForm button {
-  padding: 10px;                   /* Space inside button */
-  border: none;                    /* Remove default border */
-  border-radius: 5px;              /* Rounded corners */
-  background: #007bff;             /* Blue button */
-  color: white;                    /* White text */
-  font-size: 16px;                 /* Slightly bigger text */
-  cursor: pointer;                 /* Pointer on hover */
-  transition: 0.2s ease;           /* Smooth hover effect */
+.loginForm button,
+.registerForm button {
+  padding: 10px; /* Space inside button */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  background: #007bff; /* Blue button */
+  color: white; /* White text */
+  font-size: 16px; /* Slightly bigger text */
+  cursor: pointer; /* Pointer on hover */
+  transition: 0.2s ease; /* Smooth hover effect */
 }
 
 /* Button hover effect */
-.loginForm button:hover, .registerForm button:hover {
-  background: #0056b3;             /* Darker blue on hover */
+.loginForm button:hover,
+.registerForm button:hover {
+  background: #0056b3; /* Darker blue on hover */
 }
 
 /* ---------------- Titles & Text ---------------- */
-.loginDiv h1, .registerDiv h1 {
-  margin-bottom: 20px;             /* Space below the title */
-  color: #333;                     /* Dark gray for readability */
-  text-align: center;              /* Center the heading */
+.loginDiv h1,
+.registerDiv h1 {
+  margin-bottom: 20px; /* Space below the title */
+  color: #333; /* Dark gray for readability */
+  text-align: center; /* Center the heading */
 }
 
-.loginDiv p, .registerDiv p {
+.loginDiv p,
+.registerDiv p {
   margin-top: 15px;
-  font-size: 14px;                 /* Slightly smaller text */
+  font-size: 14px; /* Slightly smaller text */
   text-align: center;
 }
 
 /* Links */
-.loginDiv a, .registerDiv a {
-  color: #007bff;                  /* Blue link color */
-  text-decoration: none;           /* Remove underline */
+.loginDiv a,
+.registerDiv a {
+  color: #007bff; /* Blue link color */
+  text-decoration: none; /* Remove underline */
 }
 
-.loginDiv a:hover, .registerDiv a:hover {
-  text-decoration: underline;      /* Underline on hover */
+.loginDiv a:hover,
+.registerDiv a:hover {
+  text-decoration: underline; /* Underline on hover */
 }
 
-.postDiv{
+.postDiv {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-
 /* List css.....................................*/
-.posts-container {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding: 20px;
+.list-container {
   max-width: 1200px;
   margin: 0 auto;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
-/* Individual post card */
-.post-card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.post-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-/* Image container */
-.post-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px;
-  margin-bottom: 15px;
-}
-
-/* Individual images */
-.post-image {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.post-image:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Post title */
-.post-name {
-  font-size: 20px;
+.list-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #2c3e50;
   font-weight: 700;
-  margin-bottom: 8px;
-  color: #333;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Post description */
-.post-desc {
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 8px;
-  line-height: 1.4;
+.postCard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  border: 1px solid #e1e8ed;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
 
-/* Post created date */
-.post-created {
-  font-size: 14px;
-  color: #888;
+.postCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive adjustments */
+.postCard-top {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.postCard-top img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  grid-row: span 2;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.postCard-top p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.postCard-top strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.postCard-main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.post-image-wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.post-image-wrapper:hover {
+  transform: scale(1.02);
+}
+
+.post-image-wrapper img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(52, 152, 219, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.postCard-main h4 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #2c3e50;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.postCard-main p {
+  margin: 0;
+  font-size: 1rem;
+  color: #6c757d;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.postCard-main strong {
+  color: #495057;
+  font-weight: 600;
+  min-width: fit-content;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #eee;
+  color: #2c3e50;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.page-btn:hover {
+  background-color: #3498db;
+  color: white;
+}
+
+.page-btn.active {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.homeDiv {
+  text-align: center;
+}
 @media (max-width: 768px) {
-  .post-images {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
+  .list-container {
+    padding: 15px;
   }
 
-  .post-image {
-    height: 120px;
+  .list-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .postCard {
+    padding: 1rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .postCard-top {
+    grid-template-columns: 50px 1fr;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .postCard-top img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .postCard-top p {
+    font-size: 0.9rem;
+  }
+
+  .post-image-wrapper img {
+    height: 250px;
+  }
+
+  .postCard-main h4 {
+    font-size: 1.1rem;
+  }
+
+  .postCard-main p {
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
-  .posts-container {
-    padding: 10px;
-    gap: 20px;
+  .list-title {
+    font-size: 1.75rem;
   }
 
-  .post-card {
-    padding: 15px;
+  .postCard {
+    padding: 0.75rem;
+    border-radius: 12px;
   }
 
-  .post-name {
-    font-size: 18px;
+  .postCard-top {
+    grid-template-columns: 45px 1fr;
+    gap: 0.5rem;
+    padding: 0.5rem;
   }
 
-  .post-desc {
-    font-size: 14px;
+  .postCard-top img {
+    width: 45px;
+    height: 45px;
   }
 
-  .post-created {
-    font-size: 12px;
+  .postCard-top p {
+    font-size: 0.85rem;
   }
+
+  .post-image-wrapper img {
+    height: 200px;
+  }
+
+  .overlay {
+    top: 8px;
+    right: 8px;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .postCard-main h4 {
+    font-size: 1rem;
+  }
+
+  .postCard-main p {
+    font-size: 0.85rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .postCard {
+    background: #1a1a1a;
+    border-color: #333;
+    color: #e1e1e1;
+  }
+
+  .postCard-top {
+    background: #2d2d2d;
+    border-color: #404040;
+  }
+
+  .postCard-top p,
+  .postCard-main p {
+    color: #b0b0b0;
+  }
+
+  .postCard-top strong,
+  .postCard-main strong {
+    color: #ffffff;
+  }
+
+  .postCard-main h4 {
+    color: #ffffff;
+  }
+}
+
+.post-deleteUpdate {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.delete-btn,
+.update-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.update-btn {
+  background-color: #3498db;
+  color: white;
+}
+
+.update-btn:hover {
+  background-color: #2980b9;
+}
+
+/* update post.........................................  */
+/* Main container */
+.updatePostContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ============================= */
+/* Carousel Section */
+/* ============================= */
+
+.postUpdate-carousel {
+  position: relative;
+  width: 100%;
+  height: 22rem;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.carousel-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-img-wrapper img {
+  width: 100%;
+  height: 22rem;
+  object-fit: cover;
+  transition: 0.3s ease;
+  border-radius: 8px;
+}
+
+/* Dimmed when marked for deletion */
+.img-deleted {
+  opacity: 0.4;
+  filter: grayscale(100%) brightness(0.7);
+  transition: 0.3s ease;
+}
+
+/* ============================= */
+/* Delete Button - Top Center, Dull Look */
+/* ============================= */
+.delete-btn-upt {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(120, 120, 120, 0.6); /* dull gray */
+  color: #f1f1f1;
+  border: none;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  border-radius: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(3px);
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.delete-btn-upt:hover {
+  background: rgba(90, 90, 90, 0.7);
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* Marked for deletion */
+.delete-btn-upt.marked {
+  background: rgba(180, 60, 60, 0.6); /* soft dull red */
+}
+
+.delete-btn-upt.marked:hover {
+  background: rgba(160, 40, 40, 0.7);
+}
+
+/* ============================= */
+/* Update Form Section */
+/* ============================= */
+
+.updateForm form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.updateForm label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.form-control {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 0.6rem;
+  font-size: 1rem;
+  transition: border 0.2s ease;
+  background: white;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.quill-editor {
+  background: white;
+  border-radius: 6px;
+}
+
+/* Update button */
+.update-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.update-btn:hover {
+  background: #0056b3;
+}
+
+/* ============================= */
+/* Responsive Design */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .updatePostContainer {
+    padding: 0.8rem;
+  }
+
+  .postUpdate-carousel {
+    height: 18rem;
+  }
+
+  .carousel-img-wrapper img {
+    height: 18rem;
+  }
+
+  .updateForm form {
+    padding: 1rem;
+  }
+
+  .delete-btn-upt {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .updatePostContainer {
+    gap: 1rem;
+  }
+
+  .update-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  .form-control {
+    font-size: 0.9rem;
+  }
+
+  .delete-btn-upt {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+}
+
+/* ============================= */
+/* Misc States */
+/* ============================= */
+
+.loading,
+.not-found {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.2rem;
+  color: #666;
 }

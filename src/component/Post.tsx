@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { useNavigate } from "react-router-dom";
 
 interface PostData {
   name: string;
@@ -9,7 +9,7 @@ interface PostData {
   postImgs: File[];
 }
 
-const Post: React.FC = () => {
+const Post = () => {
   const [data, setData] = useState<PostData>({
     name: "",
     description: "",
@@ -24,23 +24,32 @@ const Post: React.FC = () => {
       setData({ ...data, [name]: value });
     }
   };
+  const navigate = useNavigate();
 
   const handleDescriptionChange = (value: string) => {
     setData({ ...data, description: value });
   };
 
+  const stripHtmlTags = (html: string): string => {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Strip HTML from description
+    const plainDescription = stripHtmlTags(data.description);
 
-    if (!data.name || !data.description || data.postImgs.length === 0) {
+    if (!data.name || !plainDescription.trim() || data.postImgs.length === 0) {
       alert("Name, description and at least one image are required");
       return;
     }
 
     const formData = new FormData();
     formData.append("name", data.name);
-    formData.append("description", data.description);
-
+    formData.append("description", plainDescription); // Use plain text
     data.postImgs.forEach((file) => {
       formData.append("postImgs", file);
     });
@@ -53,10 +62,10 @@ const Post: React.FC = () => {
           authorization: `Bearer ${token}`,
         },
       });
-
       alert("Post uploaded successfully");
       console.log(res.data);
       setData({ name: "", description: "", postImgs: [] });
+      navigate('/')
     } catch (err: any) {
       alert(err.response?.data?.message || "Server error");
       console.error(err);
@@ -74,14 +83,12 @@ const Post: React.FC = () => {
           value={data.name}
           onChange={handleInputChange}
         />
-
         <ReactQuill
           theme="snow"
           value={data.description}
           onChange={handleDescriptionChange}
           placeholder="Write your description..."
         />
-
         <input
           type="file"
           name="postImgs"
@@ -89,7 +96,6 @@ const Post: React.FC = () => {
           accept="image/*"
           onChange={handleInputChange}
         />
-
         <button type="submit">Upload Post</button>
       </form>
     </div>

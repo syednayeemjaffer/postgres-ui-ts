@@ -20,7 +20,7 @@ const Login = () => {
     try {
       const res = await axios.post("http://localhost:2000/api/login", data);
       localStorage.setItem("token", res.data.token);
-      navigate("/home");
+      navigate("/");
     } catch (err: any) {
       alert(`Error occurred: ${err.message}`);
     }

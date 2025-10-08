@@ -1,9 +1,11 @@
 import React from "react";
+import ListPost from "./ListPost";
 
 const Home = () => {
   return (
-    <div>
+    <div className="homeDiv">
       <h1>Home</h1>
+      <ListPost/>
     </div>
   );
 };
