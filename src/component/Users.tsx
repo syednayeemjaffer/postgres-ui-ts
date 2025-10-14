@@ -22,9 +22,12 @@ const Users = () => {
 
   const fetch = async () => {
     try {
-      const res = await axios.get(`http://localhost:2000/api/users?page=${btnNo}&limit=${limit}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const res = await axios.get(
+        `http://localhost:2000/api/users?page=${btnNo}&limit=${limit}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       setUsers(res.data.users);
       setTotalbox(Math.ceil(res.data.totalUsers / limit));
     } catch (err: any) {
@@ -32,7 +35,9 @@ const Users = () => {
     }
   };
 
-  useEffect(() => { fetch(); }, [btnNo]);
+  useEffect(() => {
+    fetch();
+  }, [btnNo]);
 
   for (let i = 1; i <= totalbox; i++) total.push(i);
 
@@ -60,7 +65,10 @@ const Users = () => {
                 <td>{user.email}</td>
                 <td>{user.ph}</td>
                 <td>
-                  <button className="edit-btn" onClick={() => navigate(`/update/${user.id}`)}>
+                  <button
+                    className="edit-btn"
+                    onClick={() => navigate(`/update/${user.id}`,{state : user})}
+                  >
                     Edit
                   </button>
                 </td>
@@ -70,7 +78,11 @@ const Users = () => {
         </table>
         <div className="pagination">
           {total.map((num) => (
-            <button key={num} className="page-btn" onClick={() => setBtnNo(num)}>
+            <button
+              key={num}
+              className="page-btn"
+              onClick={() => setBtnNo(num)}
+            >
               {num}
             </button>
           ))}

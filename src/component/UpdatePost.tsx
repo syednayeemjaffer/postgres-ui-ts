@@ -21,6 +21,12 @@ interface UpdateData {
   deleteImgs: string[];
 }
 
+interface Popup {
+  show: boolean;
+  message: string;
+  type: "success" | "error";
+}
+
 const UpdatePost = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -28,6 +34,7 @@ const UpdatePost = () => {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [popup, setPopup] = useState<Popup>({ show: false, message: "", type: "success" });
 
   const [data, setData] = useState<UpdateData>({
     name: "",
@@ -36,34 +43,38 @@ const UpdatePost = () => {
     deleteImgs: [],
   });
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:2000/api/getPosts/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        const fetchedPost = res.data.post;
-        setPost(fetchedPost);
-        setData({
-          name: fetchedPost.name,
-          description: fetchedPost.description,
-          newImgs: [],
-          deleteImgs: [],
-        });
-      } catch (err: any) {
-        console.error("Error fetching post:", err.message);
-      } finally {
-        setLoading(false);
+  const validate = () => {
+    if (!data.name.trim()) {
+      setPopup({ show: true, message: "Post name is required", type: "error" });
+      return false;
+    }
+    if (data.name.length > 100) {
+      setPopup({ show: true, message: "Post name must be less than 100 characters", type: "error" });
+      return false;
+    }
+    if (!data.description.trim()) {
+      setPopup({ show: true, message: "Description is required", type: "error" });
+      return false;
+    }
+    if (data.description.length > 500) {
+      setPopup({ show: true, message: "Description must be less than 500 characters", type: "error" });
+      return false;
+    }
+    if (data.newImgs.length > 0) {
+      for (let file of data.newImgs) {
+        const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+        if (!allowedTypes.includes(file.type)) {
+          setPopup({ show: true, message: "Image must be jpeg, jpg, or png", type: "error" });
+          return false;
+        }
+        if (file.size > 3 * 1024 * 1024) {
+          setPopup({ show: true, message: "Image must be less than 3MB", type: "error" });
+          return false;
+        }
       }
-    };
-
-    fetchPost();
-  }, [id]);
+    }
+    return true;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files, value } = e.target;
@@ -83,28 +94,20 @@ const UpdatePost = () => {
     }));
   };
 
-  const stripHtmlTags = (html: string): string => {
-    const tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
-  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validate()) return;
+
     if (!id) return;
     setUpdating(true);
 
     try {
       const formData = new FormData();
       formData.append("name", data.name);
-      const plainDescription = stripHtmlTags(data.description);
-
-      formData.append("description", plainDescription);
-
+      formData.append("description", data.description);
       data.deleteImgs.forEach((img) => formData.append("deleteImg", img));
-
       data.newImgs.forEach((file) => formData.append("postImgs", file));
-
-
 
       await axios.put(`http://localhost:2000/api/updatePost/${id}`, formData, {
         headers: {
@@ -113,15 +116,39 @@ const UpdatePost = () => {
         },
       });
 
-      alert("Post updated successfully!");
-      navigate("/");
+      setPopup({ show: true, message: "Post updated successfully!", type: "success" });
     } catch (err: any) {
       console.error("Error updating post:", err.message);
-      alert(err.response?.data?.message || "Error updating post");
+      setPopup({ show: true, message: err.response?.data?.message || "Error updating post", type: "error" });
     } finally {
       setUpdating(false);
     }
   };
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await axios.get(`http://localhost:2000/api/getPosts/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const fetchedPost = res.data.post;
+        setPost(fetchedPost);
+        setData({
+          name: fetchedPost.name,
+          description: fetchedPost.description,
+          newImgs: [],
+          deleteImgs: [],
+        });
+      } catch (err: any) {
+        console.error("Error fetching post:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPost();
+  }, [id]);
 
   if (loading) return <p className="loading">Loading...</p>;
   if (!post) return <p className="not-found">Post not found.</p>;
@@ -134,16 +161,11 @@ const UpdatePost = () => {
             {post.imgs.map((img, index) => {
               const isMarked = data.deleteImgs.includes(img);
               return (
-                <div
-                  key={index}
-                  className={`carousel-item ${index === 0 ? "active" : ""}`}
-                >
+                <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
                   <div className="carousel-img-wrapper">
                     <img
                       src={`http://localhost:2000/post/${img}`}
-                      className={`d-block w-100 ${
-                        isMarked ? "img-deleted" : ""
-                      }`}
+                      className={`d-block w-100 ${isMarked ? "img-deleted" : ""}`}
                       alt={`Post image ${index + 1}`}
                     />
                     <button
@@ -158,23 +180,11 @@ const UpdatePost = () => {
               );
             })}
           </div>
-
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExample"
-            data-bs-slide="prev"
-          >
+          <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
             <span className="carousel-control-prev-icon" aria-hidden="true" />
             <span className="visually-hidden">Previous</span>
           </button>
-
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExample"
-            data-bs-slide="next"
-          >
+          <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
             <span className="carousel-control-next-icon" aria-hidden="true" />
             <span className="visually-hidden">Next</span>
           </button>
@@ -190,7 +200,6 @@ const UpdatePost = () => {
             value={data.name}
             onChange={handleChange}
             className="form-control"
-            required
           />
 
           <label>Description</label>
@@ -215,6 +224,41 @@ const UpdatePost = () => {
           </button>
         </form>
       </div>
+
+      {popup.show && (
+        <div
+          className="modal fade show d-flex align-items-center justify-content-center"
+          tabIndex={-1}
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{popup.type === "success" ? "Success" : "Error"}</h5>
+                <button type="button" className="btn-close" onClick={() => {
+                  setPopup({ ...popup, show: false });
+                  if (popup.type === "success") navigate("/");
+                }}></button>
+              </div>
+              <div className="modal-body">
+                <p>{popup.message}</p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setPopup({ ...popup, show: false });
+                    if (popup.type === "success") navigate("/");
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

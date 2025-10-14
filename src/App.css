@@ -757,3 +757,19 @@
   font-size: 1.2rem;
   color: #666;
 }
+
+
+/* ============================= */
+/* loginUpdate */
+/* ============================= */
+.user_Update{
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  align-items: center;
+}
+
+.user_Update_form{
+  border: 2px solid black;
+  
+}

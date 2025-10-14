@@ -45,13 +45,25 @@ const Register = () => {
     switch (name) {
       case "firstname":
         if (!value) errorMsg = "Firstname is required";
-        else if (value.length < 3 || value.length > 30 || !nameregex.test(value))
-          errorMsg = "Firstname must contain only letters and be 3-30 characters";
+        else if (
+          value.length < 3 ||
+          value.length > 30 ||
+          !nameregex.test(value)
+        ){
+          errorMsg =
+            "Firstname must contain only letters and be 3-30 characters";
+        }
+          
         break;
       case "lastname":
         if (!value) errorMsg = "Lastname is required";
-        else if (value.length < 1 || value.length > 20 || !nameregex.test(value))
-          errorMsg = "Lastname must contain only letters and be 1-20 characters";
+        else if (
+          value.length < 1 ||
+          value.length > 20 ||
+          !nameregex.test(value)
+        )
+          errorMsg =
+            "Lastname must contain only letters and be 1-20 characters";
         break;
       case "email":
         if (!value) errorMsg = "Email is required";
@@ -70,8 +82,10 @@ const Register = () => {
         if (!value) errorMsg = "Profile image is required";
         else {
           const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
-          if (!allowedTypes.includes(value.type)) errorMsg = "Profile image must be jpeg, jpg, or png";
-          if (value.size > 3 * 1024 * 1024) errorMsg = "Profile image must be less than 3MB";
+          if (!allowedTypes.includes(value.type))
+            errorMsg = "Profile image must be jpeg, jpg, or png";
+          if (value.size > 3 * 1024 * 1024)
+            errorMsg = "Profile image must be less than 3MB";
         }
         break;
       default:
@@ -128,7 +142,9 @@ const Register = () => {
             onChange={inputhandler}
             placeholder="First Name"
           />
-          {errors.firstname && <p style={{ color: "red" }}>{errors.firstname}</p>}
+          {errors.firstname && (
+            <p style={{ color: "red" }}>{errors.firstname}</p>
+          )}
         </div>
         <div>
           <input

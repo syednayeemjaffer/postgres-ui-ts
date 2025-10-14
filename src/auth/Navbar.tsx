@@ -19,6 +19,7 @@ function BasicExample() {
             {!token && <Nav.Link onClick={() => navigate("/register")}>Register</Nav.Link>}
             {token && <Nav.Link onClick={() => navigate("/users")}>Users</Nav.Link>}
             {token && <Nav.Link onClick={() => navigate("/post")}>Post</Nav.Link>}
+            {token && <Nav.Link onClick={() => navigate("/loginUpdate")}>LoginUpdate</Nav.Link>}
             {token && (
               <Nav.Link
                 onClick={() => {
