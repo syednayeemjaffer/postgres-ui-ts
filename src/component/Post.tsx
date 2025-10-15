@@ -3,6 +3,7 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
+import { toast } from "react-toastify";
 
 interface PostData {
   name: string;
@@ -101,7 +102,7 @@ const Post = () => {
         },
       });
 
-      alert(res?.data?.message || "Post uploaded successfully");
+      toast.success("Post is added successfully.")
       setData({ name: "", description: "", postImgs: [] });
       navigate("/");
     } catch (err: any) {

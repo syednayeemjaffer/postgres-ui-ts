@@ -4,12 +4,13 @@ import { jwtDecode } from "jwt-decode";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
+// =============== INTERFACES ===============
 interface UserData {
   firstname?: string;
   lastname?: string;
   ph?: string;
   email?: string;
-  profile?: File;
+  profile?: File | string;
 }
 
 interface ErrorData {
@@ -20,6 +21,13 @@ interface ErrorData {
   profile?: string;
 }
 
+interface PasswordData {
+  oldPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+}
+
+// =============== LOGIN UPDATE COMPONENT ===============
 export const LoginUpdate = () => {
   const [data, setData] = useState<UserData>({});
   const [errors, setErrors] = useState<ErrorData>({});
@@ -32,14 +40,14 @@ export const LoginUpdate = () => {
     const fetchUserData = async () => {
       const token = localStorage.getItem("token");
       if (!token) return navigate("/login");
+
       const decoded = jwtDecode<{ id: number }>(token);
       setId(decoded.id);
-      const res = await axios.get(
-        `http://localhost:2000/api/user/${decoded.id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+
+      const res = await axios.get(`http://localhost:2000/api/user/${decoded.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
       setData(res.data.user);
     };
     fetchUserData();
@@ -49,21 +57,11 @@ export const LoginUpdate = () => {
     let errorMsg = "";
     switch (name) {
       case "firstname":
-        if (
-          !value ||
-          value.length < 3 ||
-          value.length > 30 ||
-          !nameregex.test(value)
-        )
+        if (!value || value.length < 3 || value.length > 30 || !nameregex.test(value))
           errorMsg = "Invalid firstname";
         break;
       case "lastname":
-        if (
-          !value ||
-          value.length < 1 ||
-          value.length > 20 ||
-          !nameregex.test(value)
-        )
+        if (!value || value.length < 1 || value.length > 20 || !nameregex.test(value))
           errorMsg = "Invalid lastname";
         break;
       case "email":
@@ -73,10 +71,11 @@ export const LoginUpdate = () => {
         if (!value) errorMsg = "Phone is required";
         break;
       case "profile":
-        if (!value) errorMsg = "Profile required";
-        else if (!["image/jpeg", "image/jpg", "image/png"].includes(value.type))
-          errorMsg = "Invalid file type";
-        else if (value.size > 3 * 1024 * 1024) errorMsg = "Max 3MB allowed";
+        if (value instanceof File) {
+          if (!["image/jpeg", "image/jpg", "image/png"].includes(value.type))
+            errorMsg = "Invalid file type";
+          else if (value.size > 3 * 1024 * 1024) errorMsg = "Max 3MB allowed";
+        }
         break;
     }
     setErrors((prev) => ({ ...prev, [name]: errorMsg }));
@@ -96,10 +95,22 @@ export const LoginUpdate = () => {
   const updateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!id) return;
+
     const token = localStorage.getItem("token");
-    await axios.put(`http://localhost:2000/api/update/${id}`, data, {
-      headers: { Authorization: `Bearer ${token}` },
+    const formData = new FormData();
+
+    formData.append("firstname", data.firstname || "");
+    formData.append("lastname", data.lastname || "");
+    formData.append("ph", data.ph || "");
+    formData.append("email", data.email || "");
+    if (data.profile instanceof File) {
+      formData.append("profile", data.profile);
+    }
+
+    await axios.put(`http://localhost:2000/api/update/${id}`, formData, {
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
     });
+
     toast.success("User Updated Successfully");
     navigate("/");
   };
@@ -107,81 +118,54 @@ export const LoginUpdate = () => {
   return (
     <div className="user_Update">
       <h1>Update login user</h1>
+      {typeof data.profile === "string" && (
+        <img src={`http://localhost:2000/${data.profile}`} />
+      )}
+
       <form onSubmit={updateUser} className="user_Update_form">
-        <input
-          name="firstname"
-          onChange={handleChange}
-          value={data.firstname || ""}
-          placeholder="First name"
-        />
+        <input name="firstname" onChange={handleChange} value={data.firstname || ""} placeholder="First name" />
         {errors.firstname && <p style={{ color: "red" }}>{errors.firstname}</p>}
-        <input
-          name="lastname"
-          onChange={handleChange}
-          value={data.lastname || ""}
-          placeholder="Last name"
-        />
+
+        <input name="lastname" onChange={handleChange} value={data.lastname || ""} placeholder="Last name" />
         {errors.lastname && <p style={{ color: "red" }}>{errors.lastname}</p>}
-        <input
-          name="ph"
-          onChange={handleChange}
-          value={data.ph || ""}
-          placeholder="Phone"
-        />
+
+        <input name="ph" onChange={handleChange} value={data.ph || ""} placeholder="Phone" />
         {errors.ph && <p style={{ color: "red" }}>{errors.ph}</p>}
-        <input
-          name="email"
-          onChange={handleChange}
-          value={data.email || ""}
-          placeholder="Email"
-        />
+
+        <input name="email" onChange={handleChange} value={data.email || ""} placeholder="Email" />
         {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
+
         <input name="profile" type="file" onChange={handleChange} />
         {errors.profile && <p style={{ color: "red" }}>{errors.profile}</p>}
+
         <button type="submit">Update User</button>
       </form>
-      <a
-        style={{ color: "blue", cursor: "pointer" }}
-        onClick={() => navigate("/changePassword", { state: { id } })}
-      >
-        Want to Change password ?
+
+      <a style={{ color: "blue", cursor: "pointer" }} onClick={() => navigate("/changePassword", { state: { id } })}>
+        Want to Change password?
       </a>
     </div>
   );
 };
 
-interface PasswordData {
-  oldPassword?: string;
-  newPassword?: string;
-  confirmPassword?: string;
-}
-
+// =============== CHANGE PASSWORD COMPONENT ===============
 export const ChangePassword = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [data, setData] = useState<PasswordData>({});
   const [lengthError, setLengthError] = useState(false);
   const [mismatchError, setMismatchError] = useState(false);
-  const id = state.id;
-
+  const id = state?.id;
   const token = localStorage.getItem("token");
 
-  const passwordregex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[^\s]{6,20}$/;
+  const passwordregex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[^\s]{6,20}$/;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updated = { ...data, [e.target.name]: e.target.value };
     setData(updated);
 
     if (e.target.name === "newPassword") {
-      if (
-        updated.newPassword &&
-        (updated.newPassword.length < 6 || updated.newPassword.length > 20)
-      ) {
-        setLengthError(true);
-      } else {
-        setLengthError(false);
-      }
+      setLengthError(updated.newPassword?.length! < 6 || updated.newPassword?.length! > 20);
     }
 
     if (e.target.name === "confirmPassword") {
@@ -200,21 +184,16 @@ export const ChangePassword = () => {
 
     if (lengthError) {
       toast.error("Password must be 6-20 characters long");
-
       return;
     }
 
     if (mismatchError) {
       toast.error("New password and confirm password do not match");
-
       return;
     }
 
     if (!passwordregex.test(data.newPassword!)) {
-      toast.error(
-        "New password must contain uppercase, lowercase, number, special character"
-      );
-
+      toast.error("New password must contain uppercase, lowercase, number, special character");
       return;
     }
 
@@ -226,7 +205,7 @@ export const ChangePassword = () => {
       );
 
       if (res.data.status) {
-        toast.error(res.data.message);
+        toast.success(res.data.message);
         navigate("/");
       } else {
         toast.error(res.data.message);
@@ -238,33 +217,13 @@ export const ChangePassword = () => {
 
   return (
     <div>
+      <ToastContainer />
       <form onSubmit={changePassword}>
-        <input
-          name="oldPassword"
-          type="password"
-          onChange={handleChange}
-          placeholder="Old password"
-        />
-        <input
-          name="newPassword"
-          type="password"
-          onChange={handleChange}
-          placeholder="New password"
-        />
-        {lengthError && (
-          <p style={{ color: "red" }}>
-            Password must be at least 6 characters and at most 20 characters
-          </p>
-        )}
-        <input
-          name="confirmPassword"
-          type="password"
-          onChange={handleChange}
-          placeholder="Confirm password"
-        />
-        {mismatchError && (
-          <p style={{ color: "red" }}>Passwords do not match</p>
-        )}
+        <input name="oldPassword" type="password" onChange={handleChange} placeholder="Old password" />
+        <input name="newPassword" type="password" onChange={handleChange} placeholder="New password" />
+        {lengthError && <p style={{ color: "red" }}>Password must be 6-20 characters</p>}
+        <input name="confirmPassword" type="password" onChange={handleChange} placeholder="Confirm password" />
+        {mismatchError && <p style={{ color: "red" }}>Passwords do not match</p>}
         <button type="submit">Change Password</button>
       </form>
     </div>
